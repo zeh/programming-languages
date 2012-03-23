@@ -1,0 +1,12 @@
+This code uses JS and canvas to generate a chart of all the programming languages I've used up to this day.
+
+This is a quick, raw, VERY UGLY code to generate a chart based on data I've previously created with a spreasheet. It
+also contains a lot of unused code because of the way I've patched features over time. If I was creating something
+more flexible (e.g. something animated), the code would be a lot different... it works well for my static result, but
+may not work for everyone.
+
+The end result is here:
+http://www.flickr.com/photos/zehfernando/7008573991/
+
+Again, the code is kinda flexible, but it may have hidden issues and some hard-coded solutions. It's not a framework.
+use at your own risk.
