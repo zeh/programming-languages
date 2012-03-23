@@ -1,0 +1,984 @@
+<!doctype html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<title></title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+
+	<script type="text/javascript">
+
+		// Plots a nice-looking chart of all the programming languages/platforms I've used in the past
+
+		function createChart() {
+
+			var WIDTH = 700;
+			var HEIGHT = 1600;
+
+			// Creates canvas container
+			var mCanvas = document.createElement("canvas");
+			mCanvas.setAttribute("width", WIDTH);
+			mCanvas.setAttribute("height", HEIGHT);
+			mCanvas.setAttribute("id", "canvas");
+			//mCanvas.style.position = "absolute";
+			//mCanvas.style.zIndex = -100;
+			document.body.appendChild(mCanvas);
+			var context = mCanvas.getContext("2d");
+			
+			// Sets language data
+			var table = {
+				header:	["Android/Java","OpenFrameworks","XNA/C#","VVVV","Processing","Max/MSP","UnrealScript","Doom 3/GUI Scripting","PHP","Flash/ActionScript","Director/Lingo","HTML/JavaScript","Perl","Gupta SQLBase","ToolBook","PCBoard/PPL","SuperBase","VisualBasic","Assembly","QBasic/QuickBasic","GWBasic","Cobol","C/C++","Pascal","Clipper/dBase","MSX Basic","TK-85 Basic","Apple Basic"],
+				years: [
+					{year:"1986", values:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},
+					{year:"1987", values:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1]},
+					{year:"1988", values:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]},
+					{year:"1989", values:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]},
+					{year:"1990", values:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]},
+					{year:"1991", values:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]},
+					{year:"1992", values:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0.1,0.2,0.5,0.2,1,0.5,0], highlight:"HIGHSCHOOL"},
+					{year:"1993", values:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0.2,0,0], highlight:"HIGHSCHOOL"},
+					{year:"1994", values:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.8,0.4,0.25,1,0,0,0,0,0,0,0,0], highlight:"HIGHSCHOOL"},
+					{year:"1995", values:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0.6,0.2,1,0,0,0,0,0.2,0,0,0]},
+					{year:"1996", values:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.5,1,0.5,0,1,0,0,0,0,0.2,0,0,0]},
+					{year:"1997", values:[0,0,0,0,0,0,0,0,0,0,0,0.5,0.2,1,0.05,0.5,1,0.1,0,1,0,0,0,0,0.2,0,0,0]},
+					{year:"1998", values:[0,0,0,0,0,0,0,0,0,0.1,0.1,0.5,0.2,0,0.1,0,0.5,0,0,1,0,0,0,0,0.2,0,0,0]},
+					{year:"1999", values:[0,0,0,0,0,0,0,0,0,0.25,0.1,1,0,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0]},
+					{year:"2000", values:[0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},
+					{year:"2001", values:[0,0,0,0,0,0,0,0,0.5,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},
+					{year:"2002", values:[0,0,0,0,0,0,0,0,0.5,1.5,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},
+					{year:"2003", values:[0,0,0,0,0,0,0,0,0.5,1.5,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},
+					{year:"2004", values:[0,0,0,0,0,0,0.3,0.4,0.4,1.5,0,0.5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},
+					{year:"2005", values:[0,0,0,0,0,0,0.6,0.3,0.3,1.5,0,0.2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], highlight:"COLLEGE"},
+					{year:"2006", values:[0,0,0,0,0,0,0,0,0.2,1.5,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], highlight:"COLLEGE"},
+					{year:"2007", values:[0,0,0,0.5,0.5,0.25,0,0,0.1,1.5,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], highlight:"COLLEGE"},
+					{year:"2008", values:[0,0,0.4,0.5,0.75,0,0,0,0.1,1.5,0,0.1,0,0,0,0,0,0,0,0,0,0,0.1,0,0,0,0,0], highlight:"COLLEGE"},
+					{year:"2009", values:[0,0,0,0,0,0,0,0,0.1,1.5,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},
+					{year:"2010", values:[0,0.1,0,0,0,0,0,0,0,1.5,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},
+					{year:"2011", values:[0.1,0,0,0,0,0,0,0,0,1.5,0,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},
+					{year:"2012", values:[1,0,0,0,0,0,0,0,0,1.5,0,0.2,0,0,0,0,0,0,0,0,0,0,0.1,0,0,0,0,0]}
+				]
+			};
+
+			// Draws background stuff
+			drawBackground(context, table, WIDTH, HEIGHT);
+
+			// Draws the chart itself
+			drawChart(context, table, WIDTH, HEIGHT);
+		}
+
+		function drawBackground(context, table, chartWidth, chartHeight) {
+		
+			// Temp variables
+			var i, j;
+
+			// Outline
+			context.fillStyle = "#000000";
+			context.globalAlpha = 0.2;
+			context.fillRect(0, 0, chartWidth, chartHeight);
+			context.fillStyle = "#ffffff";
+			context.globalAlpha = 1;
+			context.fillRect(1, 1, chartWidth-2, chartHeight-2);
+			
+			// Year lines
+			var y;
+			var rowHeight = chartHeight / (table.years.length - 1);
+			
+			var HIGHLIGHT_COLORS = [0xf2f2f2];
+			var lastHighlight = undefined;
+			var newHighlight;
+			var highlightsUsed = 0;
+
+			for (i = 0; i < table.years.length; i++) {
+
+				// Line
+				context.fillStyle = "#000000";
+				context.globalAlpha = 0.2;
+
+				y = Math.round((i - 0.5) * rowHeight);
+				context.fillRect(1, y, chartWidth-2, 1);
+				
+				newHighlight = table.years[i].highlight;
+				if (lastHighlight != newHighlight) {
+					if (lastHighlight != undefined) {
+						// End of a highlight
+						highlightsUsed++;
+					}
+				}
+
+				if (newHighlight != undefined) {
+					// Has highlight
+					
+					// Background
+					context.fillStyle = "#" + ("000000" + HIGHLIGHT_COLORS[highlightsUsed % HIGHLIGHT_COLORS.length].toString(16)).substr(-6, 6);
+					context.globalAlpha = 1;
+					context.fillRect(1, y+1, chartWidth-2, Math.round((i + 0.5) * rowHeight) - y - 1);
+					
+					if (lastHighlight != newHighlight) {
+						// First time for this highlight
+						
+						y = Math.round(i * rowHeight);
+				
+						context.lineWidth = 3;
+						context.strokeStyle = "#ffffff";
+						context.fillStyle = "#000000";
+						context.globalAlpha = 1;
+
+						context.font = '11px sans-serif';
+
+						context.textBaseline = "middle";
+						context.strokeText(newHighlight, 50, y + 1);
+
+						context.globalAlpha = 0.7;
+						context.fillText(newHighlight, 50, y + 1);
+					}
+					
+					lastHighlight = newHighlight;
+				} else {
+					lastHighlight = undefined;
+				}
+				
+				// Text
+				y = Math.round(i * rowHeight);
+				
+				if (y <= 0) y += 10;
+				if (y >= chartHeight) y -= 10;
+
+				context.lineWidth = 3;
+				context.strokeStyle = "#ffffff";
+				context.fillStyle = "#000000";
+				context.globalAlpha = 1;
+
+				context.font = '11px sans-serif';
+
+				context.textBaseline = "middle";
+				context.strokeText(table.years[i].year, 4, y + 1);
+
+				context.globalAlpha = 0.7;
+				context.fillText(table.years[i].year, 4, y + 1);
+			}
+
+			//context.fillRect(1, 1, chartWidth - 1, chartHeight - 1);
+			
+		}
+
+		function drawChart(context, table, chartWidth, chartHeight) {
+			// Sets parameters
+			var INCREASE_PER_LANGUAGE = 1.02;			// The list increases by this % on every new language listed
+			var SLICE_CENTER_BIAS = 0.3;				// How much each slice tries to stay in its previous center; 0 = not at all (chart is globally centered) to 1 = total (chart moves around to accomodate)
+			
+	//		// New palette
+	//		var COLORS = [	0xff4d4d, 0xffa64d, 0xffff4d, 0x62ff4d, 0x62ffff, 0x62a6ff, 0x624dff, 0xbe4dff, 0xff4dff,
+	//						0xe64d4d, 0xe6944d, 0xe6db4d, 0x62db4d, 0x62dbdb, 0x6294db, 0x624ddb, 0xae4ddb, 0xe64ddb,
+	//						0xd24d4d, 0xd2864d, 0xd2bf4d, 0x62bf4d, 0x62bfbf, 0x6286bf, 0x624dbf, 0xa14dbf, 0xd24dbf,
+	//						0xc04d4d, 0xc07b4d, 0xc0a84d, 0x62a84d, 0x62a8a8, 0x627ba8, 0x624da8, 0x964da8, 0xc04da8];
+
+	//		// New palette, transposed
+	//		var COLORS = [	0xff4d4d, 0xe64d4d, 0xd24d4d, 0xc04d4d, 
+	//						0xffa64d, 0xe6944d, 0xd2864d, 0xc07b4d,
+	//						0xffff4d, 0xe6db4d, 0xd2bf4d, 0xc0a84d,
+	//						0x62ff4d, 0x62db4d, 0x62bf4d, 0x62a84d,
+	//						0x62ffff, 0x62dbdb, 0x62bfbf, 0x62a8a8,
+	//						0x62a6ff, 0x6294db, 0x6286bf, 0x627ba8,
+	//						0x624dff, 0x624ddb, 0x624dbf, 0x624da8,
+	//						0xbe4dff, 0xae4ddb, 0xa14dbf, 0x964da8,
+	//						0xff4dff, 0xe64ddb, 0xd24dbf, 0xc04da8];
+
+			// New palette 2
+			var COLORS = [	0xff4d4d, 0xb24a36, 0xe57a45,
+							0xffa64d, 0xb18636, 0xe1c345,
+							0xe5e24f, 0x8ba536, 0x86cd45, 
+							0x62db4d, 0x449f5d, 0x58d5aa, 
+							0x62f7f7, 0x449aaf, 0x3d799e, 0x81b8ff,
+							0x62a6ff, 0x4460b2, 0x3d43a0,
+							0x624dff, 0x5936b2, 0x8f45e5,
+							0xbe4dff, 0x8e36a1, 0xc245bb,
+							0xe64db7, 0xa64a67, 0xdd7a65
+			];
+
+			// LibreOffice
+			//var COLORS = [0x004586, 0xff420e, 0xffd320, 0x579d1c, 0x7e0021, 0x83caff, 0x314004, 0xaecf00, 0x4b1f6f, 0xff950e, 0xc5000b, 0x0084d1];
+			//var COLORS = [0xb63226, 0xa40000, 0x720000, 0xb68626, 0xa46800, 0x724900, 0xaab626, 0x95a400, 0x687200, 0x35b667, 0x02a441, 0x01722d, 0x269eb6, 0x0086a4, 0x005e72, 0x005e72, 0x001aa4, 0x001272, 0x9a26b6, 0x8100a4, 0x5a0072];
+			
+			// Temp variables
+			var i, j;
+			
+			// Creates weighted table
+
+			var years = [];
+			var newYear;
+			var totalSum;		// Sum of all languages this year
+			var numLanguages;	// Number of languages used this year
+			var desiredLength;	// Desired length of this year
+			for (i = 0; i < table.years.length; i++) {
+				// Find total sum of this line
+				totalSum = 0;
+				numLanguages = 0;
+				for (j = 0; j < table.years[i].values.length; j++) {
+					totalSum += table.years[i].values[j];
+					if (table.years[i].values[j] > 0) numLanguages++;
+				}
+
+				// Decides weighted sum
+				desiredSum = chartWidth * 0.4 * Math.pow(INCREASE_PER_LANGUAGE, numLanguages - 1);
+
+				if (numLanguages == 0) {
+					totalSum = 1;
+					numLanguages = 0;
+					desiredSum = 0;
+				}
+
+				// Calculate new values
+				newYear = {desiredSum:desiredSum, values:[]};
+				for (j = 0; j < table.years[i].values.length; j++) {
+					newYear.values.push(table.years[i].values[j] / totalSum);
+				}
+				
+				years.push(newYear);
+			}
+			
+			// Creates table with x points
+
+			var posX;
+			var startX;
+			var currentWidth;
+			
+			var points = [];
+			var newPoints;
+			var baseX = 0;
+
+			for (i = 0; i < years.length; i++) {
+				posX = 0;
+				startX = baseX - years[i].desiredSum / 2;
+				newPoints = [];
+				for (j = 0; j < years[i].values.length; j++) {
+					currentWidth = years[i].values[j] * years[i].desiredSum;
+					newPoints.push({
+						xl:startX + posX,
+						xr:startX + posX + currentWidth,
+						width:currentWidth,
+						weight:1
+					});
+					//newPoints.push({xl:Math.round(startX + posX), xr:Math.round(startX + posX + currentWidth)});
+					posX += currentWidth;
+				}
+				points.push(newPoints);
+			}
+			
+			
+			/*
+			// Adds some bias: the biggest ones closer to the center
+			var maxWidth;
+			var minWidth;
+			var pWidth;
+			var offset;
+			var pCenterX;
+			for (i = 0; i < points.length; i++) {
+				// First, finds smallest and biggest widths in this line
+				maxWidth = -1;
+				minWidth = -1; // Will always be 0 in the end, unless excluded
+				for (j = 0; j < points[i].length; j++) {
+					if (maxWidth == -1 || points[i][j].width > maxWidth) maxWidth = points[i][j].width;
+					//if ((minWidth == -1 || points[i][j].width < minWidth) && points[i][j].width > 0) minWidth = points[i][j].width;
+					if (minWidth == -1 || points[i][j].width < minWidth) minWidth = points[i][j].width;
+				}
+				
+				if (minWidth == maxWidth) minWidth = 0;
+				
+				log ("Width = " + minWidth + " - " + maxWidth);
+				
+				// Now, change the weight of each slice based on the size (0-1)
+				for (j = 0; j < points[i].length; j++) {
+					points[i][j].weight = (points[i][j].width - minWidth) / (maxWidth - minWidth);
+					//log("Width = " + points[i][j].width + ", weight = " + points[i][j].weight);
+				}
+				
+				// Then, adjust based on the weight necessary to move this item to the center
+				offset = 0;
+				for (j = 0; j < points[i].length; j++) {
+					pCenterX = points[i][j].xl + points[i][j].width / 2;
+					offset -= (pCenterX - baseX) * points[i][j].weight * points[i][j].weight * points[i][j].weight * points[i][j].weight * points[i][j].weight * 0.1;
+					//log ("   => " + (pCenterX - baseX) * points[i][j].weight + ", " + points[i][j].weight);
+				}
+				
+				log("Line " + i + " weight = " + Math.round(offset));
+				
+				// Finally, apply the weight to the whole data
+				for (j = 0; j < points[i].length; j++) {
+					points[i][j].xl += offset;
+					points[i][j].xr += offset;
+				}
+			}
+			*/
+			
+			// Finds weights: from 0 (smallest) to 1 (biggest)
+
+			var maxWidth;
+			var minWidth;
+			for (i = 0; i < points.length; i++) {
+
+				// First, finds smallest and biggest widths in this line
+				maxWidth = -1;
+				minWidth = -1; // Will always be 0 in the end, unless excluded
+				for (j = 0; j < points[i].length; j++) {
+					if (maxWidth == -1 || points[i][j].width > maxWidth) maxWidth = points[i][j].width;
+					//if ((minWidth == -1 || points[i][j].width < minWidth) && points[i][j].width > 0) minWidth = points[i][j].width;
+					if (minWidth == -1 || points[i][j].width < minWidth) minWidth = points[i][j].width;
+				}
+				
+				if (minWidth == maxWidth) minWidth = 0;
+				
+				// Now, change the weight of each slice based on the size (0-1)
+				for (j = 0; j < points[i].length; j++) {
+					points[i][j].weight = (points[i][j].width - minWidth) / (maxWidth - minWidth);
+					if (maxWidth == 0) points[i][j].weight = 0;
+				}
+				
+			}
+
+			
+			// Move slices around as determined by SLICE_CENTER_BIAS, to make the graph transitions smoother
+			var pWidth;
+			var offset;
+			var pCenterX;
+			var actualCenterX = [];
+			var actualCenterLine;
+			var biasWeight;
+			for (i = 0; i < points.length; i++) {
+				
+				actualCenterLine = [];
+				
+				// First, reads center of all ranges
+				for (j = 0; j < points[i].length; j++) {
+					actualCenterLine.push(points[i][j].xl + points[i][j].width / 2);
+				}
+
+				actualCenterX.push(actualCenterLine);
+				
+				// Averages out the center based on previous value
+				if (i > 0) {
+					for (j = 0; j < points[i].length; j++) {
+						actualCenterX[i][j] = actualCenterX[i-1][j] - (actualCenterX[i-1][j] - actualCenterX[i][j]) * (1-SLICE_CENTER_BIAS);
+					}
+				}
+				
+				// Then, adjust based on the weight necessary to move this item to the desired center
+				totalOffset = 0;
+				totalWeight = 0;
+				for (j = 0; j < points[i].length; j++) {
+					//biasWeight = Math.max(points[i][j].weight, points[Math.max(i-1, 0)][j].weight);
+					//biasWeight = (points[Math.min(i+1, points[i].length - 2)][j].weight + points[i][j].weight + points[Math.max(i-1, 0)][j].weight) / 2;
+					biasWeight = points[i][j].weight;
+					biasWeight = biasWeight > 0 ? biasWeight + 0.1: 0;
+					pCenterX = points[i][j].xl + points[i][j].width / 2;
+					
+					totalWeight += biasWeight;
+					totalOffset += (actualCenterX[i][j] - pCenterX) * biasWeight;
+					//offset -= (pCenterX - actualCenterX[i][j]) * points[i][j].weight;
+					//log ("   => " + (pCenterX - baseX) * points[i][j].weight + ", " + points[i][j].weight);
+				}
+				
+				var offset = totalWeight > 0 ? totalOffset / totalWeight : 0;
+				
+				// Finally, apply the weight to the whole data
+				for (j = 0; j < points[i].length; j++) {
+					points[i][j].xl += offset;
+					points[i][j].xr += offset;
+				}
+			}
+			
+			// Creates matrix with actual, concrete points
+			var finalPoints = [];
+			var finalPointsLine;
+			
+			var scaleX = -0.8; // Flip it
+			var offsetX = chartWidth / 2;
+			var rowHeight = chartHeight / (table.years.length - 1);
+			var spi;
+			var obj;
+			
+			for (i = -1; i < years.length+1; i++) {
+				finalPointsLine = [];
+				
+				spi = Math.min(Math.max(i, 0), years.length-1);
+				
+				for (j = 0; j < years[0].values.length; j++) {
+					//if (j == 0) log ("+row " + i + ", px = " + points[spi][j].xl + ", " + points[spi][j].xr);
+ 					obj = {
+						left: {
+							point: {
+								x:points[spi][j].xl * scaleX + offsetX,
+								y:i * rowHeight
+							},
+							tangent: {
+								x: 0,
+								y: 0
+							}
+						},
+						right: {
+							point: {
+								x:points[spi][j].xr * scaleX + offsetX,
+								y: i * rowHeight
+							},
+							tangent: {
+								x: 0,
+								y: 0
+							}
+						},
+						width: 0
+					};
+					obj.width = Math.abs(obj.left.point.x - obj.right.point.x);
+					finalPointsLine.push(obj);
+					//if (j == 0) log ("++row " + i + ", px = " + finalPointsLine[0].left.point.x + ", " + finalPointsLine[0].right.point.x);
+				}
+				
+				finalPoints.push(finalPointsLine);
+				//log ("----row " + (finalPoints.length-1) + ", px = " + finalPoints[finalPoints.length-1][0].left.point.x + ", " + finalPoints[finalPoints.length-1][0].right.point.x);
+			}
+
+			//for (i = 1; i < finalPoints.length-1; i++) log ("++++row " + i + ", px = " + finalPoints[i-1][0].left.point.x + ", " + finalPoints[i-1][0].right.point.x);
+
+			// Finds the tangent for all curves splices
+			var tangentsXL, tangentsYL;
+			var tangentsXR, tangentsYR;
+			for (j = 0; j < finalPoints[0].length; j++) {
+				for (i = 1; i < finalPoints.length-2; i++) {
+					tangentsXL = getTangents(finalPoints[i-1][j].left.point.x, finalPoints[i][j].left.point.x, finalPoints[i+1][j].left.point.x, finalPoints[i+2][j].left.point.x);
+					tangentsYL = getTangents(finalPoints[i-1][j].left.point.y, finalPoints[i][j].left.point.y, finalPoints[i+1][j].left.point.y, finalPoints[i+2][j].left.point.y);
+					tangentsXR = getTangents(finalPoints[i-1][j].right.point.x, finalPoints[i][j].right.point.x, finalPoints[i+1][j].right.point.x, finalPoints[i+2][j].right.point.x);
+					tangentsYR = getTangents(finalPoints[i-1][j].right.point.y, finalPoints[i][j].right.point.y, finalPoints[i+1][j].right.point.y, finalPoints[i+2][j].right.point.y);
+					
+					finalPoints[i][j].left.tangent.x = tangentsXL.m1;
+					finalPoints[i][j].left.tangent.y = tangentsYL.m1;
+					finalPoints[i][j].right.tangent.x = tangentsXR.m1;
+					finalPoints[i][j].right.tangent.y = tangentsYR.m1;
+
+					finalPoints[i+1][j].left.tangent.x = tangentsXL.m2; // Use += 2
+					finalPoints[i+1][j].left.tangent.y = tangentsYL.m2;
+					finalPoints[i+1][j].right.tangent.x = tangentsXR.m2;
+					finalPoints[i+1][j].right.tangent.y = tangentsYR.m2;
+				}
+			}
+			
+			if (true) {
+			
+				// Make an average of all tangents so columns edges match
+				var tx, ty, tangents, tangentWeight;
+				var lastX;
+				var newX;
+				var k;
+				var currentPoints;
+				for (i = 0; i < finalPoints.length; i++) {
+				
+					spi = Math.min(Math.max(i-1, 0), years.length-1);
+
+					tx = 0;
+					ty = 0;
+					tangents = 0;
+					lastX = undefined;
+					currentTangents = [];
+
+					// Read all values, until X is different
+					for (j = 0; j < finalPoints[i].length; j++) {
+						// Left
+						newX = finalPoints[i][j].left.point.x;
+						
+						if (Math.abs(newX - lastX) > 0.001) {
+							// Changed in X! Must apply the current tangent to all points
+							for (k = 0; k < currentTangents.length; k++) {
+								currentTangents[k].x = tx / tangents;
+								currentTangents[k].y = ty / tangents;
+							}
+							
+							// Reset
+							tx = 0;
+							ty = 0;
+							tangents = 0;
+							lastX = undefined;
+							currentTangents = [];
+						}
+
+						// Add
+						currentTangents.push(finalPoints[i][j].left.tangent);
+						tangentWeight = 0.08 + points[spi][j].weight;
+						tx += finalPoints[i][j].left.tangent.x * tangentWeight;
+						ty += finalPoints[i][j].left.tangent.y * tangentWeight;
+						tangents += tangentWeight;
+						lastX = newX;
+
+						// Right
+						newX = finalPoints[i][j].right.point.x;
+						
+						if (Math.abs(newX - lastX) > 0.001) {
+							// Changed in X! Must apply the current tangent to all points
+							for (k = 0; k < currentTangents.length; k++) {
+								currentTangents[k].x = tx / tangents;
+								currentTangents[k].y = ty / tangents;
+							}
+							
+							// Reset
+							tx = 0;
+							ty = 0;
+							tangents = 0;
+							lastX = undefined;
+							currentTangents = [];
+						}
+
+						// Add
+						currentTangents.push(finalPoints[i][j].right.tangent);
+						tangentWeight = 0.08 + points[spi][j].weight;
+						tx += finalPoints[i][j].right.tangent.x * tangentWeight;
+						ty += finalPoints[i][j].right.tangent.y * tangentWeight;
+						tangents += tangentWeight;
+						lastX = newX;
+					}
+					
+					for (k = 0; k < currentTangents.length; k++) {
+						currentTangents[k].x = tx / tangents;
+						currentTangents[k].y = ty / tangents;
+					}
+					
+				}
+			}
+
+			
+			// Finally, plot values
+
+			//var x1, w1, y1, x2, w2, y2;
+			
+			// TODO: only draw stuff when necessary; skip rows with 0 length?
+
+			// Draw it column-by-column
+			
+			// TODO: reactivate curves. check why it's nor working. are tangents correct?
+			
+			var color;
+
+			// Draws the polygons themselves
+			for (j = 0; j < finalPoints[0].length; j++) {
+			
+				// Start
+				color = COLORS[j % COLORS.length];
+				context.fillStyle = "#" + ("000000" + color.toString(16)).substr(-6, 6);
+
+				context.globalAlpha = 1;
+				context.beginPath();
+
+				// Draws line on left side
+				context.moveTo(finalPoints[0][j].left.point.x, finalPoints[0][j].left.point.y);
+				context.lineTo(finalPoints[1][j].left.point.x, finalPoints[1][j].left.point.y);
+				
+				for (i = 1; i < finalPoints.length-2; i++) {
+					drawCurveHermite(context, finalPoints[i-1][j].left.point, finalPoints[i][j].left.point, finalPoints[i+1][j].left.point, finalPoints[i+2][j].left.point, finalPoints[i][j].left.tangent,  finalPoints[i+1][j].left.tangent, false);
+				}
+				
+				// Draws line on right side
+				context.lineTo(finalPoints[finalPoints.length-1][j].right.point.x, finalPoints[finalPoints.length-1][j].right.point.y);
+				context.lineTo(finalPoints[finalPoints.length-2][j].right.point.x, finalPoints[finalPoints.length-2][j].right.point.y);
+
+				for (i = finalPoints.length-2; i > 1; i--) {
+					drawCurveHermite(context, finalPoints[i+1][j].right.point, finalPoints[i][j].right.point, finalPoints[i-1][j].right.point, finalPoints[i-2][j].right.point, finalPoints[i][j].right.tangent,  finalPoints[i-1][j].right.tangent, true);
+				}
+				
+				context.lineTo(finalPoints[0][j].right.point.x, finalPoints[0][j].right.point.y);
+				
+				// End
+				context.closePath();
+				//context.stroke();
+				context.fill();
+			}
+			
+			// Same, for the lines
+			var lineTolerance = 0.01; // Will only draw lines if the width is higher than this
+			var drawingStroke = false;
+			var strokeColor = 0.5; // 0 = black, 1 = original color
+
+			for (j = 0; j < finalPoints[0].length; j++) {
+			
+				// Start
+				color = COLORS[j % COLORS.length];
+				
+				//context.strokeStyle = "#000000";
+				context.strokeStyle = "#" + ("000000" + ((((color & 0xff0000) * strokeColor) & 0xff0000) | (((color & 0xff00) * strokeColor) & 0xff00) | (((color & 0xff) * strokeColor) & 0xff)).toString(16)).substr(-6, 6);
+				context.lineWidth = 1.1;
+				context.globalAlpha = 0.6;
+				context.beginPath();
+
+				// Draws line on left side
+				context.moveTo(finalPoints[0][j].left.point.x, finalPoints[0][j].left.point.y);
+				context.lineTo(finalPoints[1][j].left.point.x, finalPoints[1][j].left.point.y);
+				
+				for (i = 1; i < finalPoints.length-2; i++) {
+					if (finalPoints[i][j].width > lineTolerance || finalPoints[i+1][j].width > lineTolerance) {
+						// Big enough, draw
+						drawingStroke = true;
+						drawCurveHermite(context, finalPoints[i-1][j].left.point, finalPoints[i][j].left.point, finalPoints[i+1][j].left.point, finalPoints[i+2][j].left.point, finalPoints[i][j].left.tangent,  finalPoints[i+1][j].left.tangent, false);
+					} else {
+						// Small, just move
+						drawingStroke = false;
+						context.moveTo(finalPoints[i+1][j].left.point.x, finalPoints[i+1][j].left.point.y);
+					}
+				}
+				
+				// Draws line on right side
+				if (drawingStroke) {
+					context.lineTo(finalPoints[finalPoints.length-1][j].right.point.x, finalPoints[finalPoints.length-1][j].right.point.y);
+					context.lineTo(finalPoints[finalPoints.length-2][j].right.point.x, finalPoints[finalPoints.length-2][j].right.point.y);
+				} else {
+					context.moveTo(finalPoints[finalPoints.length-2][j].right.point.x, finalPoints[finalPoints.length-2][j].right.point.y);
+				}
+
+				for (i = finalPoints.length-2; i > 1; i--) {
+					if (finalPoints[i][j].width > lineTolerance || finalPoints[i-1][j].width > lineTolerance) {
+						// Big enough, draw
+						drawingStroke = true;
+						drawCurveHermite(context, finalPoints[i+1][j].right.point, finalPoints[i][j].right.point, finalPoints[i-1][j].right.point, finalPoints[i-2][j].right.point, finalPoints[i][j].right.tangent,  finalPoints[i-1][j].right.tangent, true);
+					} else {
+						// Small, just move
+						drawingStroke = false;
+						context.moveTo(finalPoints[i-1][j].right.point.x, finalPoints[i-1][j].right.point.y);
+					}
+				}
+				
+				if (drawingStroke) context.lineTo(finalPoints[0][j].right.point.x, finalPoints[0][j].right.point.y);
+				
+				// End
+				context.stroke();
+			}
+			
+			// Plot legend
+			var newLegends;
+			var oldLegends;
+			var legendTypes;
+			var usedLegends;
+			var mustMoveRight;
+			var plottedLegendsLeft, plottedLegendsRight;
+			var LEGEND_POSITION_POS_START = 0.4;	// Position on the line where the legend box starts
+			var LEGEND_POSITION_POS_STEP = 0.32;		// Position on the line for each additional step
+
+			var VALID_NEW = "new";
+			var VALID_OLD = "old";
+			var INVALID = "invalid";
+			
+			//var LEGEND_BOX_WIDTH = 10;
+			//var LEGEND_BOX_HEIGHT = 10;
+			var LEGEND_CIRCLE_RADIUS = 4;
+			var LEGEND_MARGIN = 34;
+			
+			var lPosLeft, lPosRight;	// Columns that contain the first (left) and last (right) valid data
+			var lPosX, lPosY;
+			var lPosXEnd;
+			var rowPosL, rowPosR;
+			var rowPosInt;				// In which row to start positioning the legend box
+			var rowPosRest;				// Position in that row (0-1) to position the legend box
+			var rowPosAdditionalL = 0;	// Row pos that leaks from a previous row to the next
+			var rowPosAdditionalLNew = 0;
+			var rowPosAdditionalR = 0;	// Row pos that leaks from a previous row to the next
+			var rowPosAdditionalRNew = 0;
+			
+			var legendTypesAll = [];
+			var legendTypesLine;
+			
+			// Find all legend types
+			for (i = 0; i < finalPoints.length-1; i++) {
+				newLegends = 0;
+				oldLegends = 0;
+				legendTypesLine = [];
+				
+				for (j = 0; j < finalPoints[i].length; j++) {
+					if (finalPoints[i+1][j].width > 0) {
+						// It is a valid column
+						if (i == 1 || finalPoints[i][j].width == 0) {
+							// It's also new, so it needs a legend
+							newLegends++;
+							legendTypesLine.push(VALID_NEW);
+						} else {
+							oldLegends++;
+							legendTypesLine.push(VALID_OLD);
+						}
+					} else {
+						legendTypesLine.push(INVALID);
+					}
+				}
+				
+				legendTypesAll.push({types:legendTypesLine, newLegends:newLegends, oldLegends:oldLegends});
+			}
+			
+			for (i = 1; i < finalPoints.length-1; i++) {
+				
+				log("-> " + table.years[i-1].year + " [" + i + "]: New legends = " + newLegends + " new, " + oldLegends + " old");
+				if (legendTypesAll[i].newLegends > 0) {
+					// Plot legends
+					usedLegends = 0;
+					mustMoveRight = false;
+					plottedLegendsLeft = 0;
+					plottedLegendsRight = 0;
+
+					rowPosAdditionalLNew = 0;
+					rowPosAdditionalRNew = 0;
+					
+					for (j = 0; j < finalPoints[i].length; j++) {
+					
+						if (legendTypesAll[i].types[j] == VALID_NEW) {
+							// Needs to plot this one
+							if ((usedLegends < (legendTypesAll[i].newLegends)/2 || legendTypesAll[i].oldLegends > 0) && !mustMoveRight) {
+								// Plot to the left
+								log("=====> plot left");
+								
+								rowPosL = i + rowPosAdditionalL + LEGEND_POSITION_POS_START + plottedLegendsLeft * LEGEND_POSITION_POS_STEP;
+								rowPosInt = Math.floor(rowPosL);
+								rowPosRest = rowPosL - rowPosInt;
+
+								// Find the valid end positions... this is needed every time because it can skip to the next line
+								lPosLeft = -1;
+								lPosRight = -1;
+								for (k = 0; k < finalPoints[rowPosInt].length; k++) {
+									if (legendTypesAll[rowPosInt].types[k] == VALID_NEW || legendTypesAll[rowPosInt].types[k] == VALID_OLD) {
+										if (lPosLeft < 0) lPosLeft = k;
+										lPosRight = k;
+									}
+								}
+								//log("=========> using actual row at " + rowPosInt + " with starting column " + lPosLeft);
+								
+								if (rowPosL - i > rowPosAdditionalLNew) rowPosAdditionalLNew = rowPosL - i;
+								
+								lPosX = getInterpolatedPositionHermite(finalPoints[rowPosInt-1][j].left.point.x, finalPoints[rowPosInt][j].left.point.x, finalPoints[rowPosInt+1][j].left.point.x, finalPoints[rowPosInt+2][j].left.point.x, rowPosRest, finalPoints[rowPosInt][j].left.tangent.x, finalPoints[rowPosInt+1][j].left.tangent.x);
+								lPosY = getInterpolatedPositionHermite(finalPoints[rowPosInt-1][j].left.point.y, finalPoints[rowPosInt][j].left.point.y, finalPoints[rowPosInt+1][j].left.point.y, finalPoints[rowPosInt+2][j].left.point.y, rowPosRest, finalPoints[rowPosInt][j].left.tangent.y, finalPoints[rowPosInt+1][j].left.tangent.y);
+
+								lPosX = Math.round(lPosX);
+								lPosY = Math.round(lPosY);
+								
+								lPosXEnd = getInterpolatedPositionHermite(finalPoints[rowPosInt-1][lPosLeft].left.point.x, finalPoints[rowPosInt][lPosLeft].left.point.x, finalPoints[rowPosInt+1][lPosLeft].left.point.x, finalPoints[rowPosInt+2][lPosLeft].left.point.x, rowPosRest, finalPoints[rowPosInt][lPosLeft].left.tangent.x, finalPoints[rowPosInt+1][lPosLeft].left.tangent.x);
+								lPosXEnd -= LEGEND_MARGIN * scaleX;
+								lPosXEnd = Math.round(lPosXEnd);
+
+								// Legend line and circle
+								color = COLORS[j % COLORS.length];
+								context.fillStyle = "#" + ("000000" + color.toString(16)).substr(-6, 6);
+								context.globalAlpha = 1;
+								context.beginPath();
+								//context.rect(lPosX, lPosY, LEGEND_BOX_WIDTH, LEGEND_BOX_HEIGHT);
+								context.rect(lPosXEnd, lPosY-1, lPosX - lPosXEnd, 2);
+								context.closePath();
+								context.fill();
+								context.beginPath();
+								context.arc(lPosXEnd, lPosY, LEGEND_CIRCLE_RADIUS, 0, Math.PI * 2, true);
+								context.arc(lPosX + 1 * scaleX, lPosY, 1.5, 0, Math.PI * 2, true);
+								context.closePath();
+								context.fill();
+								
+								// Text
+								context.lineWidth = 3;
+								context.strokeStyle = "#ffffff";
+								context.fillStyle = "#000000";
+								context.globalAlpha = 1;
+
+								context.font = '16px Calibri';
+
+								context.textBaseline = "middle";
+								context.textAlign = scaleX < 0 ? "left" : "right";
+								
+								context.strokeText(table.header[j], lPosXEnd - 20 * scaleX, lPosY);
+								context.globalAlpha = 0.8;
+								context.fillText(table.header[j], lPosXEnd - 20 * scaleX, lPosY);
+
+
+								plottedLegendsLeft++;
+							} else {
+								// Plot to the right
+								log("=====> plot right");
+								
+								rowPosR = i + rowPosAdditionalR + LEGEND_POSITION_POS_START + plottedLegendsRight * LEGEND_POSITION_POS_STEP;
+								rowPosInt = Math.floor(rowPosR);
+								rowPosRest = rowPosR - rowPosInt;
+
+								// Find the valid end positions... this is needed every time because it can skip to the next line
+								lPosLeft = -1;
+								lPosRight = -1;
+								for (k = 0; k < finalPoints[rowPosInt].length; k++) {
+									if (legendTypesAll[rowPosInt].types[k] == VALID_NEW || legendTypesAll[rowPosInt].types[k] == VALID_OLD) {
+										if (lPosLeft < 0) lPosLeft = k;
+										lPosRight = k;
+									}
+								}
+								//log("=========> using actual row at " + rowPosInt + " with starting column " + lPosLeft);
+								
+								if (rowPosR - i > rowPosAdditionalRNew) rowPosAdditionalRNew = rowPosR - i;
+								
+								lPosX = getInterpolatedPositionHermite(finalPoints[rowPosInt-1][j].right.point.x, finalPoints[rowPosInt][j].right.point.x, finalPoints[rowPosInt+1][j].right.point.x, finalPoints[rowPosInt+2][j].right.point.x, rowPosRest, finalPoints[rowPosInt][j].right.tangent.x, finalPoints[rowPosInt+1][j].right.tangent.x);
+								lPosY = getInterpolatedPositionHermite(finalPoints[rowPosInt-1][j].right.point.y, finalPoints[rowPosInt][j].right.point.y, finalPoints[rowPosInt+1][j].right.point.y, finalPoints[rowPosInt+2][j].right.point.y, rowPosRest, finalPoints[rowPosInt][j].right.tangent.y, finalPoints[rowPosInt+1][j].right.tangent.y);
+
+								lPosX = Math.round(lPosX);
+								lPosY = Math.round(lPosY);
+								
+								lPosXEnd = getInterpolatedPositionHermite(finalPoints[rowPosInt-1][lPosRight].right.point.x, finalPoints[rowPosInt][lPosRight].right.point.x, finalPoints[rowPosInt+1][lPosRight].right.point.x, finalPoints[rowPosInt+2][lPosRight].right.point.x, rowPosRest, finalPoints[rowPosInt][lPosRight].right.tangent.x, finalPoints[rowPosInt+1][lPosRight].right.tangent.x);
+								lPosXEnd += LEGEND_MARGIN * scaleX;
+								lPosXEnd = Math.round(lPosXEnd);
+
+								// Legend line and circle
+								color = COLORS[j % COLORS.length];
+								context.fillStyle = "#" + ("000000" + color.toString(16)).substr(-6, 6);
+								context.globalAlpha = 1;
+								context.beginPath();
+								//context.rect(lPosX, lPosY, LEGEND_BOX_WIDTH, LEGEND_BOX_HEIGHT);
+								context.rect(lPosXEnd, lPosY-1, lPosX - lPosXEnd, 2);
+								context.closePath();
+								context.fill();
+								context.beginPath();
+								context.arc(lPosXEnd, lPosY, LEGEND_CIRCLE_RADIUS, 0, Math.PI * 2, true);
+								context.arc(lPosX + 1 * scaleX, lPosY, 1.5, 0, Math.PI * 2, true);
+								context.closePath();
+								context.fill();
+								
+								// Text
+								context.lineWidth = 3;
+								context.strokeStyle = "#ffffff";
+								context.fillStyle = "#000000";
+								context.globalAlpha = 1;
+
+								context.font = '16px Calibri';
+
+								context.textBaseline = "middle";
+								context.textAlign = scaleX < 0 ? "right" : "left";
+								
+								context.strokeText(table.header[j], lPosXEnd + 20 * scaleX, lPosY);
+								context.globalAlpha = 0.8;
+								context.fillText(table.header[j], lPosXEnd + 20 * scaleX, lPosY);
+
+								plottedLegendsRight++;
+							}
+							
+							usedLegends++;
+						} else if (legendTypesAll[i].types[j] == VALID_OLD) {
+							usedLegends++;
+							mustMoveRight = true;
+							log("=====> skip");
+						}
+					}
+
+					rowPosAdditionalL = Math.max(rowPosAdditionalLNew - 1, 0);
+					
+				}
+			}
+			
+			// Draws circles for debugging purposes
+			for (j = 0; j < finalPoints[0].length; j++) {
+				
+				context.fillStyle = "#000000";
+				context.globalAlpha = 0.3;
+				context.beginPath();
+				for (i = 0; i < finalPoints.length; i++) {
+					//context.arc(finalPoints[i][j].left.point.x, finalPoints[i][j].left.point.y, 1.5, 0, Math.PI * 2, true);
+					//context.arc(finalPoints[i][j].right.point.x, finalPoints[i][j].right.point.y, 1.5, 0, Math.PI * 2, true);
+				}
+				context.closePath();
+				context.fill();
+				
+			}
+
+			log("Done.");
+		}
+		
+		function drawLine(context, p0, p1, p2, p3) {
+			// Draws a line between p1 and p2
+			context.lineTo(p2.x, p2.y);
+		}
+		
+		function drawCurveCatmullRom(context, p0, p1, p2, p3) {
+			// Draws a curve between p1 and p2 using Catmull-Rom
+
+			var segments = 20;
+			var x, y;
+			for (var i = 1; i <= segments; i++) {
+				//x = getInterpolatedPosition(p0.x, p1.x, p2.x, p3.x, i / segments);
+				//y = getInterpolatedPosition(p0.y, p1.y, p2.y, p3.y, i / segments);
+				x = getInterpolatedPositionCatmullRom(p0.x, p1.x, p2.x, p3.x, i / segments);
+				y = getInterpolatedPositionCatmullRom(p0.y, p1.y, p2.y, p3.y, i / segments);
+				context.lineTo(x, y);
+			}
+		}
+		
+		function drawCurveHermite2(context, p0, p1, p2, p3, m1, m2, isInverse) {
+			// Quick draw with lines instead, for point checking
+			context.lineTo(p2.x, p2.y);
+		}
+
+		function drawCurveHermite(context, p0, p1, p2, p3, m1, m2, isInverse) {
+			// Draws a curve between p1 and p2 using Cubic Hermite
+			
+			//drawCurveCatmullRom(context, p0, p1, p2, p3);
+			//return;
+			
+			// Inverses tangents if it means it's drawing the opposite direction
+			var vf = isInverse ? -1 : 1;
+
+			var segments = 12;
+			var x, y;
+			for (var i = 1; i <= segments; i++) {
+				//x = getInterpolatedPosition(p0.x, p1.x, p2.x, p3.x, i / segments);
+				//y = getInterpolatedPosition(p0.y, p1.y, p2.y, p3.y, i / segments);
+				x = getInterpolatedPositionHermite(p0.x, p1.x, p2.x, p3.x, i / segments, m1.x * vf, m2.x * vf);
+				y = getInterpolatedPositionHermite(p0.y, p1.y, p2.y, p3.y, i / segments, m1.y * vf, m2.y * vf);
+				context.lineTo(x, y);
+			}
+		}
+
+		function getInterpolatedPositionCatmullRom(p0, p1, p2, p3, t) {
+			// Gets all positions on a curve between p1 and p2 using a catmull-rom spline
+			// http://www.dxstudio.com/guide_content.aspx?id=70a2b2cf-193e-4019-859c-28210b1da81f
+			var t3 = t * t * t;
+			var t2 = t * t;
+			var f0 = -0.5 * t3 + t2 - 0.5 * t;
+			var f1 =  1.5 * t3 - 2.5 * t2 + 1.0;
+			var f2 = -1.5 * t3 + 2.0 * t2 + 0.5 * t;
+			var f3 =  0.5 * t3 - 0.5 * t2;
+			return p0 * f0 + p1 * f1 + p2 * f2 + p3 * f3;
+		}
+
+		function getInterpolatedPositionHermite(p0, p1, p2, p3, t, m1, m2) {
+			// Gets all positions on a curve between p1 and p2 using a Cubic Hermite spline
+			// http://en.wikipedia.org/wiki/Cubic_Hermite_spline
+			
+			// Tangents
+			var t3 = t * t * t;
+			var t2 = t * t;
+
+			return (2 * t3 - 3 * t2 + 1) * p1 + (t3 - 2 * t2 + t) * m1 + (-2 * t3 + 3 * t2) * p2 + (t3 - t2) * m2;
+		}
+		
+		function getTangents(p0, p1, p2, p3) {
+			// Find the tangents of a curve segment using Kochanek-Bartels splines
+			// http://en.wikipedia.org/wiki/Kochanek%E2%80%93Bartels_spline
+			
+			var t = 0; // Tension; curve smoothness, as it changes the length of the tangent vector (-1 forces straight on point; 1 = produces a line)
+			var b = 0; // Bias; (-1 = align to hit the point at the right angle; 1 = align to hit the point in the easiet way after leaving the previous point)
+			var c = 0; // Continuity; (-1 = produces a line; 1 = pointy thing)
+
+			// 0, 0, 0 is the same as a catmull-rom
+			
+			var m1 = (((1-t) * (1+b) * (1+c)) / 2) * (p1 - p0) + (((1-t) * (1-b) * (1-c)) / 2) * (p2 - p1);
+			var m2 = (((1-t) * (1+b) * (1-c)) / 2) * (p2 - p1) + (((1-t) * (1-b) * (1+c)) / 2) * (p3 - p2);
+			
+			return {m1:m1, m2:m2};
+
+		}
+
+		function log(__text) {
+			if (console != undefined) console.log(__text);
+		}
+
+	</script>
+	
+	<style type='text/css'>
+		body {
+			margin:0;
+			padding:0;
+		}
+	</style>
+
+</head>
+<body onLoad="createChart();">
+</body>
+</html>
